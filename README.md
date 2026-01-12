@@ -47,6 +47,10 @@ Logs are written to `services/embedding-api/service.log`.
     -   Input: `{"documents": ["text1", "text2"]}`
     -   Output: `{"embeddings": [{"indices": [...], "values": [...]}, ...]}`
     -   Default Model: `prithivida/Splade_PP_en_v1`
+-   **POST `/embed/image`**: Generate dense image embeddings.
+    -   Input: `{"images": ["base64_string_1", "base64_string_2"]}`
+    -   Output: `{"embeddings": [[0.1, ...], [0.2, ...]]}`
+    -   Default Model: `Qdrant/clip-ViT-B-32-vision`
 
 Configuration is managed via `.env` (see `services/embedding-api/src/config.py`).
 
