@@ -42,3 +42,7 @@ docker-compose.override.yml
 
 # Project specific
 services/embedding-api/.env
+
+
+# Log
+*.log

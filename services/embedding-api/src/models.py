@@ -14,3 +14,7 @@ class SparseVector(BaseModel):
 
 class SparseEmbeddingResponse(BaseModel):
     embeddings: List[SparseVector]
+
+class ImageEmbedRequest(BaseModel):
+    images: List[str]
+    model_name: Optional[str] = None

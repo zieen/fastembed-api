@@ -2,7 +2,9 @@ import requests
 import json
 import time
 
-BASE_URL = "http://localhost:8000"
+import os
+
+BASE_URL = os.getenv("BASE_URL", "http://localhost:8000")
 
 def test_health():
     print(f"Testing Health Check at {BASE_URL}/health...")
@@ -52,6 +54,27 @@ def test_sparse():
     except Exception as e:
         print(f"❌ Sparse Embeddings Failed: {e}")
 
+def test_image():
+    print("\nTesting Image Embeddings...")
+    # 1x1 white pixel PNG
+    base64_img = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="
+    payload = {
+        "images": [base64_img]
+    }
+    try:
+        resp = requests.post(f"{BASE_URL}/embed/image", json=payload)
+        resp.raise_for_status()
+        data = resp.json()
+        embeddings = data["embeddings"]
+        print(f"Received {len(embeddings)} embeddings")
+        if len(embeddings) == 1 and len(embeddings[0]) > 0:
+            print(f"Dimension: {len(embeddings[0])}")
+            print("✅ Image Embeddings Passed")
+        else:
+            print("❌ Image Embeddings Failed: Invalid response format")
+    except Exception as e:
+        print(f"❌ Image Embeddings Failed: {e}")
+
 if __name__ == "__main__":
     # Wait for service to be ready
     for _ in range(10):
@@ -64,3 +87,4 @@ if __name__ == "__main__":
     test_health()
     test_dense()
     test_sparse()
+    test_image()
